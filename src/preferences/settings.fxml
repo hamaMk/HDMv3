@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="preferences.Settings">
+   <children>
+      <TabPane prefHeight="336.0" prefWidth="600.0" style="-fx-background-color: #96CDCD;" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Connection">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="280.0" prefWidth="600.0" style="-fx-background-color: #2E2E2E;">
+                     <children>
+                        <Label layoutX="26.0" layoutY="32.0" text="Proxy" textFill="#e1dfdf">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Separator layoutX="26.0" layoutY="81.0" prefHeight="0.0" prefWidth="362.0" />
+                        <RadioButton fx:id="btnOff" layoutX="279.0" layoutY="49.0" mnemonicParsing="false" onAction="#btnOffClick" selected="true" text="OFF" textFill="#c9c6c6">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="g1" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="btnOn" layoutX="348.0" layoutY="49.0" mnemonicParsing="false" onAction="#btnOnClick" text="ON" textFill="#c9c6c6" toggleGroup="$g1" />
+                        <TextField fx:id="portInput" disable="true" layoutX="26.0" layoutY="154.0" promptText="port" />
+                        <TextField fx:id="proxyInput" disable="true" layoutX="26.0" layoutY="116.0" prefHeight="25.0" prefWidth="268.0" promptText="proxy" />
+                        <TextField fx:id="userNameInput" disable="true" layoutX="26.0" layoutY="228.0" prefHeight="25.0" prefWidth="270.0" promptText="User name" />
+                        <TextField fx:id="passwordInput" disable="true" layoutX="26.0" layoutY="262.0" promptText="Password" />
+                        <Label layoutX="26.0" layoutY="92.0" text="pref." textFill="#c9c6c6" />
+                        <Label layoutX="26.0" layoutY="199.0" text="credentials (optional)" textFill="#c9c6c6" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Files">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #2E2E2E;">
+                     <children>
+                        <Label layoutX="286.0" layoutY="145.0" text="N/A" textFill="#dad8d8" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Button fx:id="btnCancel" layoutX="480.0" layoutY="354.0" mnemonicParsing="false" onAction="#btnCancelClick" prefHeight="25.0" prefWidth="96.0" style="-fx-background-radius: 1em;" text="Cancel" />
+      <Button fx:id="btnApply" layoutX="348.0" layoutY="354.0" mnemonicParsing="false" onAction="#btnApplyClick" prefHeight="25.0" prefWidth="96.0" style="-fx-background-radius: 1em;" text="Apply" />
+      <Button fx:id="btnDone" layoutX="211.0" layoutY="354.0" mnemonicParsing="false" onAction="#btnDoneClick" prefHeight="25.0" prefWidth="96.0" style="-fx-background-radius: 1em;" text="Done" />
+   </children>
+</AnchorPane>
