@@ -53,7 +53,7 @@ public class DowloadTask extends Task<Boolean> {
 
         try {
             if(mURL.toString().contains("https")){
-                DownloadPopUp.activateSSL();
+               // DownloadPopUp.activateSSL();
             }
             //connection = (HttpURLConnection)new URL("http://localhost/hama/website/movies/the%20hundred%201.mp4").openConnection();
             connection = (URLConnection )mURL.openConnection();
@@ -61,8 +61,8 @@ public class DowloadTask extends Task<Boolean> {
 
             //request headers
             //connection.setRequestProperty();
-            connection.addRequestProperty("User-Agent", "Mozilla");
-            connection.addRequestProperty("Referer", "google.com");
+         //   connection.addRequestProperty("User-Agent", "Mozilla");
+           // connection.addRequestProperty("Referer", "google.com");
             connection.setRequestProperty("Range","bytes="+ startBit+"-"+stopBit);
             //  out.println("response code :"+ connection.getResponseCode());
 

@@ -144,7 +144,7 @@ public class DownloadPopUp implements Initializable {
                 }
         };
 
-// Activate the new trust manager
+        // Activate the new trust manager
         try {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
