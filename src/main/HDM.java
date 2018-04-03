@@ -1,9 +1,6 @@
 package main;
 
-import data.Data;
-import data.DataStore;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,10 +10,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import preferences.Config;
 import preferences.ConfigStore;
-
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.util.Properties;
+
 
 import static java.lang.System.out;
 
@@ -34,18 +30,10 @@ public class HDM extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-
-        //load configurations
-       // loadConfig();
-
-
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         FXMLLoader loader = new FXMLLoader();
 
-
-
         loader.setLocation(getClass().getResource("home.fxml"));
-        //loader.setController(Home.class);
         Parent root = loader.load();
 
         dragHandler(primaryStage, root);
@@ -69,17 +57,6 @@ public class HDM extends Application {
             objectOutputStream.close();
             out.println("configuration file saved successfully");
         }else  out.println("nothing to write to config file");
-
-    /*    DataStore dataStore = new DataStore();
-        ObservableList<Data> buff = Home.getTable().getItems();
-
-        for(Data x: buff){
-            dataStore.add(x);
-        }
-
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("resources/bank.ser"));
-        objectOutputStream.writeObject(dataStore);
-        objectOutputStream.close();*/
 
     }
 

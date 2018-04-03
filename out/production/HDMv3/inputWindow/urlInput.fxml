@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 
-<AnchorPane prefHeight="113.0" prefWidth="506.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="inputWindow.UrlInput">
+<AnchorPane prefHeight="143.0" prefWidth="569.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="inputWindow.UrlInput">
    <children>
-      <TextField fx:id="input" layoutX="7.0" layoutY="22.0" prefHeight="25.0" prefWidth="493.0" promptText="Download link" style="-fx-background-radius: 1em;" />
-      <Button fx:id="btnCancel" layoutX="400.0" layoutY="66.0" mnemonicParsing="false" onAction="#cancelClick" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 1em;" text="Cancel" />
-      <Button fx:id="btnAdd" layoutX="283.0" layoutY="66.0" mnemonicParsing="false" onAction="#addClick" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 1em;" text="Add" />
+      <TextField fx:id="input" layoutX="38.0" layoutY="54.0" prefHeight="25.0" prefWidth="493.0" promptText="Download link" style="-fx-background-radius: 1em;" />
+      <Button fx:id="btnCancel" layoutX="431.0" layoutY="98.0" mnemonicParsing="false" onAction="#cancelClick" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 1em;" text="Cancel" />
+      <Button fx:id="btnAdd" layoutX="314.0" layoutY="98.0" mnemonicParsing="false" onAction="#addClick" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 1em;" text="Add" />
       <Region layoutX="298.0" layoutY="83.0" prefHeight="10.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

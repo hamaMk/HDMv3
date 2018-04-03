@@ -5,10 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.Home;
 import merger.MergeView;
@@ -17,6 +15,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
@@ -44,6 +43,8 @@ public class DownloadPopUp implements Initializable {
     public Label fileSize;
     public Label downloaded;
     public Label speed;
+    public Label lblDownloadStatus;
+    public CheckBox chkPath;
     private URL url;
 
     private boolean t1,t2,t3,t4,t5,t6;
@@ -60,6 +61,9 @@ public class DownloadPopUp implements Initializable {
     DowloadTask thread5;
 
     URLConnection  konekt = null;
+    HttpsURLConnection connectS = null;
+
+    private static boolean https = false;
 
     public DownloadPopUp() {
 
@@ -69,14 +73,16 @@ public class DownloadPopUp implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initDownload(Home.getSurl());
        // activateSSL();
+
     }
 
 
     public void btnStartClick(){
 
-        Home.addToBank(fileNamee, totalSizeOfFile);
+
 
         speed.setText("N/A (Experimental feature)");
+        //speed.textProperty().bind();
 
         startThread(thread0);
         startThread(thread1);
@@ -233,19 +239,14 @@ public class DownloadPopUp implements Initializable {
     }
 
 
-    public void autoConfig(URLConnection urlConnection){
 
-        HttpURLConnection httpURLConnection = null;
-        HttpsURLConnection httpsURLConnection = null;
 
-        if(urlConnection instanceof HttpURLConnection){
-            httpURLConnection = (HttpURLConnection) urlConnection;
-        }
-        else if(urlConnection instanceof HttpsURLConnection){
-            httpsURLConnection = (HttpsURLConnection) urlConnection;
-        }
-
+    public URLConnection getConnectionObject(){
+        if(https)
+        return connectS;
+        else return konekt;
     }
+
 
 
     //start download sequence
@@ -253,30 +254,29 @@ public class DownloadPopUp implements Initializable {
 
 
         if(url.toString().contains("https")){
-            activateSSL();
+//            activateSSL();
+            try {
+                connectS = (HttpsURLConnection) url.openConnection();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            https =true;
             out.println("ssl activated -> https connection detected ");
+        }else{
+            try {
+                konekt = url.openConnection();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            https = false;
         }
 
 
-        //connekt
+            getConnectionObject().setRequestProperty("User-Agent", "Mozilla");
+
 
         try {
-            konekt = url.openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-      //  try {
-            konekt.setRequestProperty("User-Agent", "Mozilla");
-           // konekt.setRequestMethod("HEAD");
-            //out.println("response :" + konekt.getResponseMessage() + "::" + konekt.getResponseCode());
-      //  } catch (ProtocolException e) {
-      //      e.printStackTrace();
-      //  }
-       /* catch(IOException io){
-            io.printStackTrace();
-        }*/
-        try {
-            konekt.connect();
+            getConnectionObject().connect();
            // out.println("response :" + konekt.getResponseMessage() + "::" + konekt.getResponseCode());
 
         } catch (IOException e) {
@@ -285,15 +285,26 @@ public class DownloadPopUp implements Initializable {
 
 
 
-        totalSizeOfFile = konekt.getContentLengthLong();
+        totalSizeOfFile = getConnectionObject().getContentLengthLong();
         long l = totalSizeOfFile/1048652;
         fileSize.setText( l +"  (MB)");
 
 
         //getting proper path depending on file being downloaded
-        contentType = konekt.getContentType();
+        contentType = getConnectionObject().getContentType();
 
          path = pathProcessor();///////////////////////////////////////
+
+
+        //choose new path
+        FileChooser fileChooser = new FileChooser();
+        File tmpr = null;
+        if(chkPath.isSelected()) {
+            tmpr = fileChooser.showSaveDialog(chkPath.getScene().getWindow());
+            out.println("path ->>>> " + tmpr.getAbsolutePath() + " :: " + tmpr.getPath());
+            path = tmpr.getPath();
+        }
+
         
         long baseLength = totalSizeOfFile/6;
         long part2 = baseLength*2;
@@ -301,10 +312,7 @@ public class DownloadPopUp implements Initializable {
         long part4 = baseLength*4;
         long part5 = baseLength*5;
 
-        //String path = "C:\\Users\\HAMANDISHE\\Videos\\HDM Downloads\\HDMv3\\";
-
         String tmp = url.toString();
-       // out.println("no shiz " +tmp);
         fileNamee =  tmp.substring(tmp.lastIndexOf("/") + 1);
         fileName.setText(fileNamee);
 
@@ -322,10 +330,6 @@ public class DownloadPopUp implements Initializable {
         binding4(thread3);
         binding5(thread4);
         binding6(thread5);
-
-        //super bind
-      //  downloaded.textProperty().bind(Ghost.aabsProperty().asString());
-
 
 
         thread0.setOnSucceeded(e ->{
@@ -394,9 +398,10 @@ public class DownloadPopUp implements Initializable {
 
         if(t1 && t2 && t3 && t4 && t5 && t6){
             out.println("all parts successfully downloaded ");
+            lblDownloadStatus.setText("Complete");
            // mIndicator.setProgress(1);
             downloaded.setText(String.valueOf(totalSizeOfFile/1048652)+" (MB)");
-
+            Home.addToBank(fileNamee, totalSizeOfFile/1048652 );
 
             //out.println(path);
             ProcessBuilder pb = new ProcessBuilder("resources/merge.exe", path, fileNamee);

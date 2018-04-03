@@ -9,23 +9,25 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-border-color: black; -fx-background-color: #1E1E1E;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Home">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-border-color: black; -fx-background-color: #1E1E1E;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Home">
    <top>
       <VBox fx:id="box" prefWidth="100.0" style="-fx-background-color: #96CDCD;" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER_RIGHT" prefWidth="200.0" style="-fx-background-color: #96CDCD;">
                <children>
-                  <Label fx:id="lblClose" onMouseClicked="#btnCloseClick" text="Close">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
+                  <ImageView fx:id="lblClose" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#btnCloseClick" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/close.png" />
+                     </image>
+                  </ImageView>
                </children>
             </HBox>
             <MenuBar style="-fx-background-color: #96CDCD;">
@@ -49,13 +51,18 @@
             </MenuBar>
             <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #96CDCD;">
               <items>
-                  <Label fx:id="lblNewdownload" onMouseClicked="#btnAddLinkClick" text="addNewDownload">
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </Label>
-                  <Region prefWidth="29.0" />
-                  <Label fx:id="lblSettings" onMouseClicked="#btnSettingsClick" text="settings" />
+                  <Region prefHeight="40.0" prefWidth="0.0" />
+                  <ImageView fx:id="lblNewdownload" fitHeight="33.0" fitWidth="33.0" onMouseClicked="#btnAddLinkClick" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/add.png" />
+                     </image>
+                  </ImageView>
+                  <Region layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="15.0" />
+                  <ImageView fx:id="lblSettings" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#btnSettingsClick" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/settings.png" />
+                     </image>
+                  </ImageView>
               </items>
                <padding>
                   <Insets left="8.0" />

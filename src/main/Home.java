@@ -2,6 +2,7 @@ package main;
 
 import data.Data;
 import data.DataStore;
+import data.DownloadItem;
 import de.jensd.fx.fontawesome.AwesomeDude;
 import de.jensd.fx.fontawesome.AwesomeIcon;
 import downloadWindow.DownloadPopUp;
@@ -12,15 +13,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import preferences.Config;
 import preferences.ConfigStore;
 import preferences.Settings;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -33,26 +33,21 @@ import static java.lang.System.out;
 
 public class Home implements Initializable{
 
-    public static TableView<Data> table;
+    public  TableView<DownloadItem> table;
     public TableColumn<Data, String> fileNameCol;
     public TableColumn<Data, String> fileSizeCol;
     public TableColumn<Data, String> downloadedCol;
     public TableColumn<Data, String> statusCol;
-
     public TreeView<String> treeView;
-
-
-   // public Button addNewDownload;
- //   public Button btnSettings;
-    public Label lblSettings;
-    public Label lblNewdownload;
-    public Label lblClose;
+    public ImageView lblSettings;
+    public ImageView lblNewdownload;
+    public ImageView lblClose;
     public VBox box;
 
     Properties system = System.getProperties();
     private static URL sURL;
     static ObservableList<Data> bank = FXCollections.observableArrayList();
-    ObservableList<Data> bank1 = FXCollections.observableArrayList();
+    static ObservableList<DownloadItem> downloadsList = FXCollections.observableArrayList();
 
 
     public void fileStructure(){
@@ -136,8 +131,12 @@ public class Home implements Initializable{
 
     }
 
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
 
         //retrieving configuration file
         Path path = Paths.get("resources/config.ser");
@@ -153,20 +152,15 @@ public class Home implements Initializable{
 
         fileStructure();
 
+
+
         fileNameCol.setCellValueFactory(new PropertyValueFactory<>("fileName"));
-        fileSizeCol.setCellValueFactory(new PropertyValueFactory<>("fileSize"));
+        fileSizeCol.setCellValueFactory(new PropertyValueFactory<>("size"));
         downloadedCol.setCellValueFactory(new PropertyValueFactory<>("downloaded"));
         statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-/*
-        Data data = new Data();
-        data.setFileName("test file1");
-        data.setFileSize(100);
-        data.setDownloaded(200);
-        data.setStatus("downloading");
 
-        bank.add(data);
-        table.setItems(bank);*/
-
+       // downloadsList.add(new DownloadItem("bshbs", 67, 7, "HJS"));
+        table.setItems(downloadsList);
 
         Path path1 = Paths.get("resources/bank.ser");
         if(path1.toFile().exists()){
@@ -177,31 +171,24 @@ public class Home implements Initializable{
         }
         else out.println("no bank file found");
 
-    /*    try{
-            table.setItems(bank);
-        }catch(NullPointerException nope){
-            out.println("line 183 ->> Home");
-        }*/
 
+        try {
+            lblClose.setImage(new Image(new FileInputStream("resources/close.png")));
+            lblNewdownload.setImage(new Image(new FileInputStream("resources/add.png")));
+            lblSettings.setImage(new Image(new FileInputStream("resources/settings.png")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-       // AwesomeIcon.VOLUME_UP
-
-       // box.setStyle("-fx-background : linear-gradient(red, yellow);");
-
-        AwesomeDude.setIcon(lblClose, AwesomeIcon.SIGNOUT, "20px");
-        AwesomeDude.setIcon(lblNewdownload, AwesomeIcon.PLUS_SIGN_ALT, "30px");
-        AwesomeDude.setIcon(lblSettings, AwesomeIcon.GEARS, "30px");
     }
 
 
     public void btnCloseClick(){
-       // Stage stage = (Stage)lblClose.getScene().getWindow();
-       // stage.close();
         Platform.exit();
     }
 
     public void btnAddLinkClick() throws IOException {
-
+       
         UrlInput tmp = new UrlInput();
         tmp.display();
     }
@@ -211,7 +198,6 @@ public class Home implements Initializable{
     }
 
     public static void linkReceived(String url) throws IOException {
-      // out.println("boom " + url);
 
         new DownloadPopUp().display(makeUrl(url));
 
@@ -226,9 +212,7 @@ public class Home implements Initializable{
         return sURL;
     }
 
-    public static TableView<Data> getTable(){
-        return table;
-    }
+
    static int x=0;
 
     public static void addToBank(String fileName, long fileSize){
@@ -238,7 +222,7 @@ public class Home implements Initializable{
         data.setDownloaded(0);
         data.setStatus("ready");
 
-        bank.add(data);
+        downloadsList.add(new DownloadItem(fileName, fileSize,fileSize, "complete"));
 
     }
 
