@@ -1,5 +1,7 @@
 package merger;
 
+import downloadComplete.Complete;
+import downloadWindow.DownloadPopUp;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -72,6 +74,7 @@ public class MergeView {
           //  closeStage();
 
             stage.close();
+            DownloadPopUp.execSeq();
         });
 
 

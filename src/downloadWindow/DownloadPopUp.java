@@ -1,6 +1,8 @@
 package downloadWindow;
 
+import downloadComplete.Complete;
 import javafx.concurrent.Worker;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -49,6 +51,8 @@ public class DownloadPopUp implements Initializable {
 
     private boolean t1,t2,t3,t4,t5,t6;
     private String fileNamee;
+    public static String nameFile;
+    public static String pathFile;
     private String contentType;
     private String path;
     long totalSizeOfFile;
@@ -65,6 +69,14 @@ public class DownloadPopUp implements Initializable {
 
     private static boolean https = false;
 
+    @FXML
+    private TextField bxPath;
+
+
+
+    public String customPath;
+    private boolean customPathIsActive;
+
     public DownloadPopUp() {
 
     }
@@ -73,11 +85,21 @@ public class DownloadPopUp implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initDownload(Home.getSurl());
        // activateSSL();
+        bxPath.setText("default-path");
+    }
 
+    @FXML
+    public void setCustomPath(){
+        FileChooser fileChooser = new FileChooser();
+        File tmp = fileChooser.showSaveDialog(btnStart.getScene().getWindow());
+        customPath = tmp.getAbsolutePath();
+        bxPath.setText(customPath);
+        customPathIsActive = true;
     }
 
 
     public void btnStartClick(){
+
 
 
 
@@ -316,6 +338,10 @@ public class DownloadPopUp implements Initializable {
         fileNamee =  tmp.substring(tmp.lastIndexOf("/") + 1);
         fileName.setText(fileNamee);
 
+       // if(customPathIsActive)path = customPath;
+
+        path =  ".tmp/";
+
         thread0 = new DowloadTask(url,0, baseLength, path + "part1");
         thread1 = new DowloadTask(url,(baseLength + 1), part2, path + "part2");
         thread2 = new DowloadTask(url,(part2 + 1), part3, path + "part3");
@@ -404,25 +430,31 @@ public class DownloadPopUp implements Initializable {
             Home.addToBank(fileNamee, totalSizeOfFile/1048652 );
 
             //out.println(path);
-            ProcessBuilder pb = new ProcessBuilder("resources/merge.exe", path, fileNamee);
+
+            if(customPathIsActive)path = customPath;
+
+            //ProcessBuilder pb = new ProcessBuilder("resources/merge.exe", path, fileNamee);
+            ProcessBuilder pb = new ProcessBuilder("resources/merge.exe", ".tmp/", customPath);
             out.println("path ->> " + path + fileNamee);
+            nameFile = fileNamee;
+            pathFile = path;
             Process mergeFiles = null;
             //     mergeFiles = pb.start();
             try {
-                new MergeView().display(pb, path, fileNamee);
+                new MergeView().display(pb, ".tmp/", fileNamee);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
 
-            //btnStart.setDisable(false);
-
+            Stage tmp = (Stage)btnStart.getScene().getWindow();
+            tmp.close();
+            customPathIsActive = false;
         }
     }
 
 
-
-
-
-
+    public static void execSeq() {
+        new Complete().display(nameFile);
+    }
 }
