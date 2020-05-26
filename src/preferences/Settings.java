@@ -9,7 +9,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import sun.misc.BASE64Encoder;
+import java.util.Base64;
+import java.util.Base64.Encoder;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -84,9 +85,9 @@ public class Settings implements Initializable{
     }
 
     public void proxyWithPass(HttpURLConnection connection){
-        BASE64Encoder encoder = new BASE64Encoder();
+        Encoder encoder = Base64.getEncoder();
         String tmp = "http:\\" + userName + ":" + passWord;
-        String encodedPass = encoder.encode( tmp.getBytes());
+        String encodedPass = encoder.encodeToString( tmp.getBytes());
         connection.setRequestProperty("Proxy-Authorization", "Basic" + encodedPass);
         sConnection = connection;
     }

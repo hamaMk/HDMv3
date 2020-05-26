@@ -11,6 +11,7 @@ import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static java.lang.System.out;
 
@@ -31,7 +32,7 @@ public class MergeView {
     }
 
 
-    public synchronized void display(ProcessBuilder processBuilder, String path, String fileName) throws IOException {
+    public synchronized void display(List<File> files, File outputFile) throws IOException {
 
         Stage stage = new Stage(StageStyle.TRANSPARENT);
 
@@ -53,25 +54,22 @@ public class MergeView {
 
         MergeView tmp = loader.getController();
         instance = tmp;
-        MergeLogic task = new MergeLogic(processBuilder);
+
+
+
+        MergeLogic task = new MergeLogic(files, outputFile);
 
         Thread thread = new Thread(task);
        // thread.setDaemon(true);
         thread.start();
         task.setOnSucceeded(event -> {
-            File f1 = new File(path+"part1");
-            f1.delete();
-            File f2 = new File(path+"part2");
-            f2.delete();
-            File f3 = new File(path+"part3");
-            f3.delete();
-            File f4 = new File(path+"part4");
-            f4.delete();
-            File f5 = new File(path+"part5");
-            f5.delete();
-            File f6 = new File(path+"part6");
-            f6.delete();
-          //  closeStage();
+            out.println("Merge complete");
+            try {
+                for (File file: files)
+                    out.println("(" + file.getAbsolutePath()  + ")" + " Part File deleted " + file.delete());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             stage.close();
             DownloadPopUp.execSeq();

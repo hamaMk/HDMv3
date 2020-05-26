@@ -1,21 +1,18 @@
 package worker;
 
-import downloadWindow.DownloadPopUp;
 import javafx.concurrent.Task;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URLConnection ;
 import java.net.URL;
 
 import static java.lang.System.out;
 
-public class DowloadTask extends Task<Boolean> {
+public class DownloadTask extends Task<Boolean> {
 
     private URL mURL;
     private long startBit;
     private long stopBit;
     private long totalLength;
-    private String path;
     private File file;
     private byte[] buff = new byte[10000];
 
@@ -26,17 +23,15 @@ public class DowloadTask extends Task<Boolean> {
         return absoluteProgress;
     }
 
-    public DowloadTask(URL URL, long startBit, long stopBit, String path) {
+    public DownloadTask(URL URL, long startBit, long stopBit, File file) {
         mURL = URL;
         this.startBit = startBit;
         this.stopBit = stopBit;
-        this.path = path;
+        this.file = file;
     }
 
     @Override
     protected Boolean call() throws Exception {
-
-        file = new File(path);
 
         OutputStream outputStream = null;
         InputStream inputStream = null;
@@ -46,7 +41,7 @@ public class DowloadTask extends Task<Boolean> {
 
             outputStream = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
-           out.println("file not found :: line 46");
+          e.printStackTrace();
         }
 
         //  System.out.println("tag1 #### ");
@@ -91,7 +86,7 @@ public class DowloadTask extends Task<Boolean> {
         }
 
 
-        out.println("connected ->> " + connection.getHeaderField("Status-Code"));
+//        out.println("connected ->> " + connection.getHeaderField("Status-Code"));
 
         //setting the totalPartLength;
         totalLength = connection.getContentLengthLong();
@@ -123,7 +118,7 @@ public class DowloadTask extends Task<Boolean> {
             }
 
         } catch (IOException e) {
-            out.println("could not download file");
+           e.printStackTrace();
             //this.updateMessage("Download failed");
         }
         this.updateMessage("Download complete");
@@ -140,10 +135,14 @@ public class DowloadTask extends Task<Boolean> {
         /////Ghost.......for calculating total downloaded from all threads
        // getGhost(downloaded);
 
-         out.println("#### download complete ### "+downloaded);
+//         out.println("#### download complete ### "+ downloaded);
         //out.println("absolute val "+absoluteProgress);
 
         return true;
+    }
+
+    public File getFile() {
+        return file;
     }
 
     public synchronized void getGhost(long downloaded){

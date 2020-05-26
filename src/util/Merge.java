@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Merge {
 
-    public static void mergeFiles(List<File> files, File outputFile) throws IOException {
+    public void mergeFiles(List<File> files, File outputFile) throws IOException {
 
         FileOutputStream fos = new FileOutputStream(outputFile);
         int len = 0;
@@ -21,6 +21,7 @@ public class Merge {
 
             while ((len = fis.read(buf)) != -1)
                 fos.write(buf, 0, len);
+            fis.close();
         }
         fos.close();
     }

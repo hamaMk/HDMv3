@@ -1,8 +1,11 @@
 package merger;
 
 import javafx.concurrent.Task;
+import util.Merge;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.System.out;
 
@@ -12,41 +15,21 @@ import static java.lang.System.out;
 public class MergeLogic extends Task<Boolean> {
 
 
-    public ProcessBuilder processBuilder;
+    private List<File> fileParts;
+    private File outputFile;
 
-
-    public MergeLogic(ProcessBuilder processBuilder) {
-        this.processBuilder = processBuilder;
+    public MergeLogic(List<File> fileParts, File outputFile){
+        this.fileParts = fileParts;
+        this.outputFile = outputFile;
     }
 
     @Override
     protected Boolean call()   {
 
 
-        Process mergeFiles = null;
+        Merge merge = new Merge();
         try {
-                 mergeFiles = processBuilder.start();
-
-            InputStream inputStream = mergeFiles.getInputStream();
-            BufferedReader buff = new BufferedReader(new InputStreamReader(inputStream));
-
-
-            String temp;
-            while((temp = buff.readLine())!= null){
-                if(temp.equals("merge completed")){
-                    out.println("## all parts successfully merged ##");
-                    try{
-                     //   new MergeView().closeStage();
-                    }catch (Exception e){e.printStackTrace();}
-
-                  //  out.println("## all parts successfulggggggggggggggggggggly merged ##");
-                    break;
-                }
-                else if(temp.equals("test :: -> failed")){
-                    out.println("## error! ... files could not be merged ##");
-                }
-            }
-
+            merge.mergeFiles(fileParts, outputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

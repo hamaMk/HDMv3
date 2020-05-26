@@ -14,7 +14,6 @@
     <root id="root">
       <element id="archive" name="JavaFXApp.jar">
         <element id="module-output" name="HDMv3" />
-        <element id="library" level="project" name="fontawesomefx-8.0.0" />
         <element id="directory" name="META-INF">
           <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/JavaFXApp/META-INF/MANIFEST.MF" />
         </element>
